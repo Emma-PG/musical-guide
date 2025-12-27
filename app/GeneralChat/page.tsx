@@ -1,16 +1,15 @@
 "use client";
-import { useSignalR } from "@/Connection/SignalR";
+import connection from "@/Connection/SignalR";
 import { useState, useEffect } from "react";
 
 export default function GeneralChatPage() {
-  const { connection } = useSignalR();
   const [user, setUser] = useState("");
-  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([{ usr: "", msg: "" }]);
 
-  const [targetUser, setTargetUser] = useState<string | null>(null);
+  const [targetUser, setTargetUser] = useState(null);
 
   const sendMessage = async () => {
     if (text == "" || text.trim() == "") return;
@@ -38,15 +37,15 @@ export default function GeneralChatPage() {
       console.log("connected");
     });
 
-    connection.on("ReceiveMessage", (user: string, message: string) => {
+    connection.on("ReceiveMessage", (user, message) => {
       setMessages((prev) => [...prev, { usr: user, msg: message }]);
     });
 
-    connection.on("Users", (arrayOfUsers: string[]) => {
+    connection.on("Users", (arrayOfUsers) => {
       setOnlineUsers(arrayOfUsers);
     });
 
-    connection.on("ReceivePrivate", (fromUser: string, message: string) => {
+    connection.on("ReceivePrivate", (fromUser, message) => {
       setMessages((prev) => [
         ...prev,
         { usr: fromUser, msg: `[private] ${message}` },
