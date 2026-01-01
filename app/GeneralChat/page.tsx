@@ -107,7 +107,7 @@ export default function GeneralChatPage() {
                   onClick={() => value !== user && setTargetUser(value)}
                   style={{
                     fontWeight: targetUser === value ? "bold" : "normal",
-                    cursor: value === user ? "not-allowed" : "pointer"
+                    cursor: value === user ? "not-allowed" : "pointer",
                   }}
                 >
                   {value}
